@@ -2,6 +2,7 @@ package org.insa.graph;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -31,6 +32,36 @@ public class Path {
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
         // TODO:
+        
+        int NO = 0;
+        while (NO < nodes.size()) {
+        	Node noeudCourant = nodes.get(NO);
+        	List<Arc> arcsSuccesseurs = new ArrayList<Arc>() = noeudCourant.getSuccessors();
+        	int minTravelTime = 0;
+        	Arc arcRapide;
+        	
+        	for (Arc arcCourant : arcsSuccesseurs) {
+        		
+        		/* si l'élément courant n'est pas le dernier de la liste on vérifie que l'on prend
+        		 * en compte seulement les arcs qui mènent au noeud suivant dans la liste donnée en argument.
+        		 * Si le noeud suivant dans la liste ne fait pas partie des successeurs du noeud actuel, on lance
+        		 * IllegalArgumentException.
+				 */
+        		if ((NO < nodes.size()-1) and (arcCourant.getDestination() == nodes.get(NO+1)) {
+        		
+        			if (minTravelTime > arcCourant.getMinimumTravelTime()) {
+        			arcRapide = arcCourant;
+        			minTravelTime = arcCourant.getRoadInformation().getMinimumTravelTime();
+        			
+        			}
+        	} else {
+        		throw new IllegalArgumentException();
+        	}
+        	/* on ajoute l'arc trouvé à la liste des arcs qui constituera le path final*/
+        	arcs.add(arcRapide);
+        	
+        	}	
+        }	
         return new Path(graph, arcs);
     }
 
@@ -51,7 +82,7 @@ public class Path {
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
+        
         return new Path(graph, arcs);
     }
 
