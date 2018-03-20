@@ -36,9 +36,9 @@ public class Path {
         int NO = 0;
         while (NO < nodes.size()) {
         	Node noeudCourant = nodes.get(NO);
-        	List<Arc> arcsSuccesseurs = new ArrayList<Arc>() = noeudCourant.getSuccessors();
-        	int minTravelTime = 0;
-        	Arc arcRapide;
+        	List<Arc> arcsSuccesseurs = noeudCourant.getSuccessors();
+        	double minTravelTime = 0;
+        	Arc arcRapide = null;
         	
         	for (Arc arcCourant : arcsSuccesseurs) {
         		
@@ -47,14 +47,22 @@ public class Path {
         		 * Si le noeud suivant dans la liste ne fait pas partie des successeurs du noeud actuel, on lance
         		 * IllegalArgumentException.
 				 */
-        		if ((NO < nodes.size()-1) and (arcCourant.getDestination() == nodes.get(NO+1)) {
+        		if ((NO < nodes.size()-1) && (arcCourant.getDestination() == nodes.get(NO+1))) {
         		
         			if (minTravelTime > arcCourant.getMinimumTravelTime()) {
         			arcRapide = arcCourant;
-        			minTravelTime = arcCourant.getRoadInformation().getMinimumTravelTime();
+        			minTravelTime = arcCourant.getMinimumTravelTime();
         			
+        			
+        			//ici : vérifier si on a trouvé 0 arcs avec la bonne dest
+        			// et lancer l'erreur sinon
         			}
-        	} else {
+        		} 
+        		
+        	}
+        	
+        	
+        		else {
         		throw new IllegalArgumentException();
         	}
         	/* on ajoute l'arc trouvé à la liste des arcs qui constituera le path final*/
