@@ -33,7 +33,7 @@ public class Path {
         List<Arc> arcs = new ArrayList<Arc>();
         // TODO:
         
-        int NO = 0;
+      /*  int NO = 0;
         while (NO < nodes.size()) {
         	Node noeudCourant = nodes.get(NO);
         	List<Arc> arcsSuccesseurs = noeudCourant.getSuccessors();
@@ -47,7 +47,7 @@ public class Path {
         		 * Si le noeud suivant dans la liste ne fait pas partie des successeurs du noeud actuel, on lance
         		 * IllegalArgumentException.
 				 */
-        		if ((NO < nodes.size()-1) && (arcCourant.getDestination() == nodes.get(NO+1))) {
+        	/*	if ((NO < nodes.size()-1) && (arcCourant.getDestination() == nodes.get(NO+1))) {
         		
         			if (minTravelTime > arcCourant.getMinimumTravelTime()) {
         			arcRapide = arcCourant;
@@ -66,11 +66,11 @@ public class Path {
         		throw new IllegalArgumentException();
         	}
         	/* on ajoute l'arc trouvé à la liste des arcs qui constituera le path final*/
-        	arcs.add(arcRapide);
+        	/*arcs.add(arcRapide);
         	
         	}	
-        }	
-        return new Path(graph, arcs);
+        }	*/
+        return new Path(graph, arcs);  
     }
 
     /**
@@ -253,11 +253,14 @@ public class Path {
      * 
      * @return Total length of the path (in meters).
      * 
-     * @deprecated Need to be implemented.
+
      */
     public float getLength() {
-        // TODO:
-        return 0;
+    	float length = 0;
+        for (Arc arc : arcs) {
+        	length=length+arc.getLength();
+        }
+        return length;
     }
 
     /**
@@ -266,15 +269,17 @@ public class Path {
      * @param speed Speed to compute the travel time.
      * 
      * @return Time (in seconds) required to travel this path at the given speed (in
-     *         kilometers-per-hour).
-     * 
-     * @deprecated Need to be implemented.
+     *         kilometers-per-hour).     
+     *
      */
     public double getTravelTime(double speed) {
-        // TODO:
-        return 0;
+    	double time=0;
+    	for (Arc arc : arcs) {
+        	time=time+arc.getTravelTime(speed);
+        }
+        return time;
     }
-
+    
     /**
      * Compute the time to travel this path if moving at the maximum allowed speed
      * on every arc.
