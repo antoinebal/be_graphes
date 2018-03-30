@@ -39,32 +39,31 @@ public class Path {
         	List<Arc> arcsSuccesseurs = noeudCourant.getSuccessors();
         	double minTravelTime = 0;
         	Arc arcRapide = null;
+        	boolean erreur=false; //sert à voir si les noeuds consécutifs dans nodes le sont dans le graphe
         	
-        	for (Arc arcCourant : arcsSuccesseurs) {
-        		
-        		/* si l'élément courant n'est pas le dernier de la liste on vérifie que l'on prend
+        	for (Arc arcCourant : arcsSuccesseurs) {	
+        		/* si l'élément courant n'est pas le dernier de la liste*/
+        		if ((NO < nodes.size()-1) {
+        		 /*on vérifie que l'on prend
         		 * en compte seulement les arcs qui mènent au noeud suivant dans la liste donnée en argument.
-        		 * Si le noeud suivant dans la liste ne fait pas partie des successeurs du noeud actuel, on lance
-        		 * IllegalArgumentException.
+        		 * Si le noeud suivant dans la liste ne fait pas partie des successeurs du noeud actuel, on met
+        		 * erreur à true
 				 */
-        		if ((NO < nodes.size()-1) && (arcCourant.getDestination() == nodes.get(NO+1))) {
+        		if (arcCourant.getDestination() == nodes.get(NO+1))) {
         		
         			if (minTravelTime > arcCourant.getMinimumTravelTime()) {
         			arcRapide = arcCourant;
         			minTravelTime = arcCourant.getMinimumTravelTime();
-        			
-        			
-        			//ici : vérifier si on a trouvé 0 arcs avec la bonne dest
-        			// et lancer l'erreur sinon
+        			erreur = false;
+        			} else {
+        				erreur = true;
         			}
         		} 
+        	}   
         		
-        	}
-        	
-        	
-        		else {
-        		throw new IllegalArgumentException();
-        	}
+        	if (erreur) {       		       		
+        	throw new IllegalArgumentException(); //les noeuds consécutifs dans nodes ne le sont pas dans le graphe
+        	} else {
         	/* on ajoute l'arc trouvé à la liste des arcs qui constituera le path final*/
         	arcs.add(arcRapide);
         	
@@ -90,6 +89,43 @@ public class Path {
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
+        
+        int NO = 0;
+        while (NO < nodes.size()) {
+        	Node noeudCourant = nodes.get(NO);
+        	List<Arc> arcsSuccesseurs = noeudCourant.getSuccessors();
+        	double minLength = 0;
+        	Arc arcCourt = null;
+        	boolean erreur=false; //sert à voir si les noeuds consécutifs dans nodes le sont dans le graphe
+        	
+        	for (Arc arcCourant : arcsSuccesseurs) {	
+        		/* si l'élément courant n'est pas le dernier de la liste*/
+        		if ((NO < nodes.size()-1) {
+        		 /*on vérifie que l'on prend
+        		 * en compte seulement les arcs qui mènent au noeud suivant dans la liste donnée en argument.
+        		 * Si le noeud suivant dans la liste ne fait pas partie des successeurs du noeud actuel, on met
+        		 * erreur à true
+				 */
+        		if (arcCourant.getDestination() == nodes.get(NO+1))) {
+        		
+        			if (minLength > arcCourant.getLength()) {
+        			arcCourt = arcCourant;
+        			minLength = arcCourant.getLength();
+        			erreur = false;
+        			} else {
+        				erreur = true;
+        			}
+        		} 
+        	}   
+        		
+        	if (erreur) {       		       		
+        	throw new IllegalArgumentException(); //les noeuds consécutifs dans nodes ne le sont pas dans le graphe
+        	} else {
+        	/* on ajoute l'arc trouvé à la liste des arcs qui constituera le path final*/
+        	arcs.add(arcCourt);
+        	
+        	}	
+        }
         
         return new Path(graph, arcs);
     }
