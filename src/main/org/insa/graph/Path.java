@@ -28,108 +28,108 @@ public class Path {
      * 
      * @deprecated Need to be implemented.
      */
-    public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
-            throws IllegalArgumentException {
-        List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
-        
-        int NO = 0;
-        while (NO < nodes.size()) {
-        	Node noeudCourant = nodes.get(NO);
-        	List<Arc> arcsSuccesseurs = noeudCourant.getSuccessors();
-        	double minTravelTime = 0;
-        	Arc arcRapide = null;
-        	boolean erreur=false; //sert à voir si les noeuds consécutifs dans nodes le sont dans le graphe
-        	
-        	for (Arc arcCourant : arcsSuccesseurs) {	
-        		/* si l'élément courant n'est pas le dernier de la liste*/
-        		if ((NO < nodes.size()-1) {
-        		 /*on vérifie que l'on prend
-        		 * en compte seulement les arcs qui mènent au noeud suivant dans la liste donnée en argument.
-        		 * Si le noeud suivant dans la liste ne fait pas partie des successeurs du noeud actuel, on met
-        		 * erreur à true
-				 */
-        		if (arcCourant.getDestination() == nodes.get(NO+1))) {
-        		
-        			if (minTravelTime > arcCourant.getMinimumTravelTime()) {
-        			arcRapide = arcCourant;
-        			minTravelTime = arcCourant.getMinimumTravelTime();
-        			erreur = false;
-        			} else {
-        				erreur = true;
-        			}
-        		} 
-        	}   
-        		
-        	if (erreur) {       		       		
-        	throw new IllegalArgumentException(); //les noeuds consécutifs dans nodes ne le sont pas dans le graphe
-        	} else {
-        	/* on ajoute l'arc trouvé à la liste des arcs qui constituera le path final*/
-        	arcs.add(arcRapide);
-        	
-        	}	
-        }	
-        return new Path(graph, arcs);
-    }
-
-    /**
-     * Create a new path that goes through the given list of nodes (in order),
-     * choosing the shortest route if multiple are available.
-     * 
-     * @param graph Graph containing the nodes in the list.
-     * @param nodes List of nodes to build the path.
-     * 
-     * @return A path that goes through the given list of nodes.
-     * 
-     * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
-     *         consecutive nodes in the list are not connected in the graph.
-     * 
-     * @deprecated Need to be implemented.
-     */
-    public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
-            throws IllegalArgumentException {
-        List<Arc> arcs = new ArrayList<Arc>();
-        
-        int NO = 0;
-        while (NO < nodes.size()) {
-        	Node noeudCourant = nodes.get(NO);
-        	List<Arc> arcsSuccesseurs = noeudCourant.getSuccessors();
-        	double minLength = 0;
-        	Arc arcCourt = null;
-        	boolean erreur=false; //sert à voir si les noeuds consécutifs dans nodes le sont dans le graphe
-        	
-        	for (Arc arcCourant : arcsSuccesseurs) {	
-        		/* si l'élément courant n'est pas le dernier de la liste*/
-        		if ((NO < nodes.size()-1) {
-        		 /*on vérifie que l'on prend
-        		 * en compte seulement les arcs qui mènent au noeud suivant dans la liste donnée en argument.
-        		 * Si le noeud suivant dans la liste ne fait pas partie des successeurs du noeud actuel, on met
-        		 * erreur à true
-				 */
-        		if (arcCourant.getDestination() == nodes.get(NO+1))) {
-        		
-        			if (minLength > arcCourant.getLength()) {
-        			arcCourt = arcCourant;
-        			minLength = arcCourant.getLength();
-        			erreur = false;
-        			} else {
-        				erreur = true;
-        			}
-        		} 
-        	}   
-        		
-        	if (erreur) {       		       		
-        	throw new IllegalArgumentException(); //les noeuds consécutifs dans nodes ne le sont pas dans le graphe
-        	} else {
-        	/* on ajoute l'arc trouvé à la liste des arcs qui constituera le path final*/
-        	arcs.add(arcCourt);
-        	
-        	}	
-        }
-        
-        return new Path(graph, arcs);
-    }
-
+	 public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
+	            throws IllegalArgumentException {
+	        List<Arc> arcs = new ArrayList<Arc>();
+	        // TODO:
+	       
+	        int NO = 0;
+	        while (NO < nodes.size()) {
+	            Node noeudCourant = nodes.get(NO);
+	            List<Arc> arcsSuccesseurs = noeudCourant.getSuccessors();
+	            double minTravelTime = 0;
+	            Arc arcRapide = null;
+	            boolean erreur=false; //sert à voir si les noeuds consécutifs dans nodes le sont dans le graphe
+	           
+	            for (Arc arcCourant : arcsSuccesseurs) {   
+	                /* si l'élément courant n'est pas le dernier de la liste*/
+	                if (NO < nodes.size()-1) {
+	                 /*on vérifie que l'on prend
+	                 * en compte seulement les arcs qui mènent au noeud suivant dans la liste donnée en argument.
+	                 * Si le noeud suivant dans la liste ne fait pas partie des successeurs du noeud actuel, on met
+	                 * erreur à true
+	                 */
+	                if (arcCourant.getDestination() == nodes.get(NO+1)) {
+	               
+	                    if (minTravelTime > arcCourant.getMinimumTravelTime()) {
+	                    arcRapide = arcCourant;
+	                    minTravelTime = arcCourant.getMinimumTravelTime();
+	                    erreur = false;
+	                    } else {
+	                        erreur = true;
+	                    }
+	                }
+	            }  
+	               
+	            if (erreur) {                             
+	            throw new IllegalArgumentException(); //les noeuds consécutifs dans nodes ne le sont pas dans le graphe
+	            } else {
+	            /* on ajoute l'arc trouvé à la liste des arcs qui constituera le path final*/
+	            arcs.add(arcRapide);
+	           
+	            }   
+	        }   
+	        return new Path(graph, arcs);
+	    }
+	 }
+	    /**
+	     * Create a new path that goes through the given list of nodes (in order),
+	     * choosing the shortest route if multiple are available.
+	     *
+	     * @param graph Graph containing the nodes in the list.
+	     * @param nodes List of nodes to build the path.
+	     *
+	     * @return A path that goes through the given list of nodes.
+	     *
+	     * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
+	     *         consecutive nodes in the list are not connected in the graph.
+	     *
+	     * @deprecated Need to be implemented.
+	     */
+	    public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
+	            throws IllegalArgumentException {
+	        List<Arc> arcs = new ArrayList<Arc>();
+	       
+	        int NO = 0;
+	        while (NO < nodes.size()) {
+	            Node noeudCourant = nodes.get(NO);
+	            List<Arc> arcsSuccesseurs = noeudCourant.getSuccessors();
+	            double minLength = 0;
+	            Arc arcCourt = null;
+	            boolean erreur=false; //sert à voir si les noeuds consécutifs dans nodes le sont dans le graphe
+	           
+	            for (Arc arcCourant : arcsSuccesseurs) {   
+	                /* si l'élément courant n'est pas le dernier de la liste*/
+	                if (NO < nodes.size()-1) {
+	                 /*on vérifie que l'on prend
+	                 * en compte seulement les arcs qui mènent au noeud suivant dans la liste donnée en argument.
+	                 * Si le noeud suivant dans la liste ne fait pas partie des successeurs du noeud actuel, on met
+	                 * erreur à true
+	                 */
+	                if (arcCourant.getDestination() == nodes.get(NO+1)) {
+	               
+	                    if (minLength > arcCourant.getLength()) {
+	                    arcCourt = arcCourant;
+	                    minLength = arcCourant.getLength();
+	                    erreur = false;
+	                    } else {
+	                        erreur = true;
+	                    }
+	                }
+	            }  
+	               
+	            if (erreur) {                             
+	            throw new IllegalArgumentException(); //les noeuds consécutifs dans nodes ne le sont pas dans le graphe
+	            } else {
+	            /* on ajoute l'arc trouvé à la liste des arcs qui constituera le path final*/
+	            arcs.add(arcCourt);
+	           
+	            }   
+	        }
+	       
+	        return new Path(graph, arcs);
+	    }
+	    }
     /**
      * Concatenate the given paths.
      * 
@@ -289,11 +289,14 @@ public class Path {
      * 
      * @return Total length of the path (in meters).
      * 
-     * @deprecated Need to be implemented.
+
      */
     public float getLength() {
-        // TODO:
-        return 0;
+    	float length = 0;
+        for (Arc arc : arcs) {
+        	length=length+arc.getLength();
+        }
+        return length;
     }
 
     /**
@@ -302,15 +305,17 @@ public class Path {
      * @param speed Speed to compute the travel time.
      * 
      * @return Time (in seconds) required to travel this path at the given speed (in
-     *         kilometers-per-hour).
-     * 
-     * @deprecated Need to be implemented.
+     *         kilometers-per-hour).     
+     *
      */
     public double getTravelTime(double speed) {
-        // TODO:
-        return 0;
+    	double time=0;
+    	for (Arc arc : arcs) {
+        	time=time+arc.getTravelTime(speed);
+        }
+        return time;
     }
-
+    
     /**
      * Compute the time to travel this path if moving at the maximum allowed speed
      * on every arc.
