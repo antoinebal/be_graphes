@@ -11,6 +11,7 @@ package org.insa.algo.utils;
 
 import java.util.ArrayList;
 
+
 /**
  * Implements a binary heap. Note that all "matching" is based on the compareTo
  * method.
@@ -143,9 +144,40 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     }
 
     @Override
-    public void remove(E x) throws ElementNotFoundException {
-        // TODO:
-    }
+	public void remove(E x) throws ElementNotFoundException {
+		if (this.isEmpty()) {
+			throw new ElementNotFoundException(x);
+		}
+		int index = this.array.indexOf(x);
+		if ((index == -1) || (index >= currentSize)) {
+			throw new ElementNotFoundException(x);
+
+		}
+		if (index == this.currentSize) {
+			--this.currentSize;
+		} else {
+			E lastItem = this.array.get(--this.currentSize);
+			this.arraySet(index, lastItem);
+			E current = this.array.get(index);
+			if (index != 0) {
+				if (current.compareTo(this.array.get(index_parent(index))) < 0) {
+					this.percolateUp(index);
+				} else if (((index + 1) * 2) < currentSize) {
+					if (current.compareTo(this.array.get(index_left(index))) > 0
+							|| current.compareTo(this.array.get(index_left(index) + 1)) > 0) {
+						this.percolateDown(index);
+					}
+				}
+			} else {
+				if (currentSize!=1) {
+					if (current.compareTo(this.array.get(index_left(index))) > 0
+							|| current.compareTo(this.array.get(index_left(index) + 1)) > 0) {
+						this.percolateDown(index);
+					}
+				}
+			}
+		}
+	}
 
     @Override
     public E findMin() throws EmptyPriorityQueueException {
