@@ -134,6 +134,42 @@ public class ArcInspectorFactory {
             public String toString() {
                 return "Fastest path, only roads open for cars";
             }
+            
+        });
+            
+            //bonus routes seulement pour vélos
+            filters.add(new ArcInspector() {
+                @Override
+                public boolean isAllowed(Arc arc) {
+                    return arc.getRoadInformation().getAccessRestrictions()
+                            .isAllowedForAny(AccessMode.BICYCLE, EnumSet.complementOf(EnumSet
+                                    .of(AccessRestriction.FORBIDDEN, AccessRestriction.PRIVATE)));
+                }
+
+                @Override
+                //le prix correspond à la longueur
+                public double getCost(Arc arc) {
+                    return arc.getLength();
+                }
+
+                @Override
+                //peu importe la vitesse
+                public int getMaximumSpeed() {
+                    return GraphStatistics.NO_MAXIMUM_SPEED;
+                }
+
+                @Override
+                public Mode getMode() {
+                    return Mode.LENGTH;
+                }
+
+                @Override
+                public String toString() {
+                    return "Shortest path, only roads open for bicycle";
+                }
+           
+
+            
         });
 
         // Non-private roads for pedestrian and bicycle:
