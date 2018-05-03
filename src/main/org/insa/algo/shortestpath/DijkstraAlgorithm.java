@@ -37,6 +37,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
 		tas.insert(labTab[data.getOrigin().getId()]);
 		labTab[data.getOrigin().getId()].setInsere(true);
+		
+		// Notify observers about the first event (origin processed).
+		notifyOriginProcessed(data.getOrigin());
 
 		// Initialize array of predecessors.
 		Arc[] predecessorArcs = new Arc[nbNodes];
@@ -66,6 +69,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 							nodeMin, arc.getDestination().getId());
 					predecessorArcs[arc.getDestination().getId()] = arc;
 					tas.insert(labTab[arc.getDestination().getId()]);
+					notifyNodeReached(arc.getDestination());
 				} else {
 					double oldDistance = labTab[arc.getDestination().getId()].getCout();
 					double newDistance = labTab[nodeMin.getId()].getCout() + w;
