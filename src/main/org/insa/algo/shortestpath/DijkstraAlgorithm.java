@@ -12,6 +12,7 @@ import org.insa.graph.*;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
+
 	public DijkstraAlgorithm(ShortestPathData data) {
 		super(data);
 	}
@@ -58,6 +59,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 			Node nodeMin = graph.get(labMin.getID());
 
 			for (Arc arc : nodeMin) {
+				if(data.isAllowed(arc)) {
 				double w = data.getCost(arc);
 				if (labTab[arc.getDestination().getId()] == null) {
 					labTab[arc.getDestination().getId()] = new Label(false, (labTab[nodeMin.getId()].getCout() + w),
@@ -75,7 +77,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 						tas.insert(labTab[arc.getDestination().getId()]);
 					}
 				}
-
+				}
 			}
 		}
 		// Destination has no predecessor, the solution is infeasible...
