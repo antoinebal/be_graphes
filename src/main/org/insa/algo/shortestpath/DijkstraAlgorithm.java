@@ -1,8 +1,11 @@
 package org.insa.algo.shortestpath;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
 
+import org.insa.algo.AbstractInputData;
+import org.insa.algo.ArcInspector;
 import org.insa.algo.AbstractSolution.Status;
 import org.insa.algo.utils.*;
 import org.insa.graph.*;
@@ -15,24 +18,21 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
 	@Override
 	protected ShortestPathSolution doRun() {
+
+		// Retrieve the graph.
 		ShortestPathData data = getInputData();
 		ShortestPathSolution solution = null;
 		Graph graph = data.getGraph();
 
 		// INITIALISATION
-		// notre tas, vide au début
+		// Notre tas, vide au début
 		BinaryHeap<Label> tas = new BinaryHeap<Label>();
-
+		boolean Fin = false; // Booléen qui stoppe la boucle si la destination est sortis du tas
 		final int nbNodes = graph.size();
 
 		// Initialisation du tableau de Label
 		Label[] labTab = new Label[nbNodes];
-		int i;
-		for (i = 0; i < nbNodes; i++) {
-			labTab[i] = new Label(i);
-		}
-
-		labTab[data.getOrigin().getId()].setCout(0);
+		labTab[data.getOrigin().getId()]=new Label(true, 0, null, data.getOrigin().getId());
 
 		tas.insert(labTab[data.getOrigin().getId()]);
 		labTab[data.getOrigin().getId()].setInsere(true);
@@ -42,7 +42,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
 		// ITERATIONS
 
-		while (!tas.isEmpty()) {
+		while (!tas.isEmpty() && !Fin) {
 
 			Label labMin = tas.deleteMin();
 			labMin.mark();
@@ -51,7 +51,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 			/* si le label extrait correspond à celui de la destination, on sort */
 			// TODO : equalTo dans Label
 			if (labMin == labTab[data.getDestination().getId()]) {
-				break;
+				Fin = true;
 			}
 
 			// on récupère le noeud associé à l'id contenu dans labMin
@@ -59,26 +59,29 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
 			for (Arc arc : nodeMin) {
 				double w = data.getCost(arc);
-				double oldDistance = labTab[arc.getDestination().getId()].getCout();
-				double newDistance = labTab[nodeMin.getId()].getCout() + w;
-
-				if (newDistance < oldDistance) {
-
-					if (labTab[arc.getDestination().getId()].dejaInsere()) {
-						// si le label a déjà été inséré, on update en faisant remove + insert
-						tas.remove(labTab[arc.getDestination().getId()]);
-					}
-					labTab[arc.getDestination().getId()].setCout(newDistance);
-					labTab[arc.getDestination().getId()].setPere(nodeMin);
+				if (labTab[arc.getDestination().getId()] == null) {
+					labTab[arc.getDestination().getId()] = new Label(false, (labTab[nodeMin.getId()].getCout() + w),
+							nodeMin, arc.getDestination().getId());
 					predecessorArcs[arc.getDestination().getId()] = arc;
 					tas.insert(labTab[arc.getDestination().getId()]);
+				} else {
+					double oldDistance = labTab[arc.getDestination().getId()].getCout();
+					double newDistance = labTab[nodeMin.getId()].getCout() + w;
+					if (newDistance < oldDistance) {
+						tas.remove(labTab[arc.getDestination().getId()]);
+						labTab[arc.getDestination().getId()].setCout(newDistance);
+						labTab[arc.getDestination().getId()].setPere(nodeMin);
+						predecessorArcs[arc.getDestination().getId()] = arc;
+						tas.insert(labTab[arc.getDestination().getId()]);
+					}
 				}
 
 			}
-
 		}
 		// Destination has no predecessor, the solution is infeasible...
-		if (predecessorArcs[data.getDestination().getId()] == null) {
+		if (predecessorArcs[data.getDestination().getId()] == null)
+
+		{
 			solution = new ShortestPathSolution(data, Status.INFEASIBLE);
 		} else {
 
