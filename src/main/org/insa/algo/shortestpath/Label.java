@@ -1,7 +1,6 @@
 package org.insa.algo.shortestpath;
 
 import org.insa.graph.Node;
-import java.lang.*;
 
 public class Label implements Comparable<Label> {
 	private boolean marked_;

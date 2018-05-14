@@ -1,17 +1,13 @@
 package org.insa.algo.shortestpath;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 
-import org.insa.algo.AbstractInputData;
-import org.insa.algo.ArcInspector;
 import org.insa.algo.AbstractSolution.Status;
 import org.insa.algo.utils.*;
 import org.insa.graph.*;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
-
 
 	public DijkstraAlgorithm(ShortestPathData data) {
 		super(data);
@@ -33,11 +29,11 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
 		// Initialisation du tableau de Label
 		Label[] labTab = new Label[nbNodes];
-		labTab[data.getOrigin().getId()]=new Label(true, 0, null, data.getOrigin().getId());
+		labTab[data.getOrigin().getId()] = new Label(true, 0, null, data.getOrigin().getId());
 
 		tas.insert(labTab[data.getOrigin().getId()]);
 		labTab[data.getOrigin().getId()].setInsere(true);
-		
+
 		// Notify observers about the first event (origin processed).
 		notifyOriginProcessed(data.getOrigin());
 
@@ -62,25 +58,25 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 			Node nodeMin = graph.get(labMin.getID());
 
 			for (Arc arc : nodeMin) {
-				if(data.isAllowed(arc)) {
-				double w = data.getCost(arc);
-				if (labTab[arc.getDestination().getId()] == null) {
-					labTab[arc.getDestination().getId()] = new Label(false, (labTab[nodeMin.getId()].getCout() + w),
-							nodeMin, arc.getDestination().getId());
-					predecessorArcs[arc.getDestination().getId()] = arc;
-					tas.insert(labTab[arc.getDestination().getId()]);
-					notifyNodeReached(arc.getDestination());
-				} else {
-					double oldDistance = labTab[arc.getDestination().getId()].getCout();
-					double newDistance = labTab[nodeMin.getId()].getCout() + w;
-					if (newDistance < oldDistance) {
-						tas.remove(labTab[arc.getDestination().getId()]);
-						labTab[arc.getDestination().getId()].setCout(newDistance);
-						labTab[arc.getDestination().getId()].setPere(nodeMin);
+				if (data.isAllowed(arc)) {
+					double w = data.getCost(arc);
+					if (labTab[arc.getDestination().getId()] == null) {
+						labTab[arc.getDestination().getId()] = new Label(false, (labTab[nodeMin.getId()].getCout() + w),
+								nodeMin, arc.getDestination().getId());
 						predecessorArcs[arc.getDestination().getId()] = arc;
 						tas.insert(labTab[arc.getDestination().getId()]);
+						notifyNodeReached(arc.getDestination());
+					} else {
+						double oldDistance = labTab[arc.getDestination().getId()].getCout();
+						double newDistance = labTab[nodeMin.getId()].getCout() + w;
+						if (newDistance < oldDistance) {
+							tas.remove(labTab[arc.getDestination().getId()]);
+							labTab[arc.getDestination().getId()].setCout(newDistance);
+							labTab[arc.getDestination().getId()].setPere(nodeMin);
+							predecessorArcs[arc.getDestination().getId()] = arc;
+							tas.insert(labTab[arc.getDestination().getId()]);
+						}
 					}
-				}
 				}
 			}
 		}
