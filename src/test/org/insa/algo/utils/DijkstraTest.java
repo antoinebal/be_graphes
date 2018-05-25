@@ -1,12 +1,18 @@
 package org.insa.algo.utils;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 import org.insa.graph.*;
 import org.insa.graph.RoadInformation.RoadType;
+import org.insa.graph.io.BinaryGraphReader;
+import org.insa.graph.io.GraphReader;
 import org.insa.algo.*;
 import org.insa.algo.shortestpath.*;
 import org.junit.BeforeClass;
@@ -127,5 +133,79 @@ public class DijkstraTest {
 			System.out.println();
 		}
 		System.out.println();
+	}
+	
+	
+	@Test
+	public void testDijkstraSurCarte() {
+		ShortestPathData data;
+		DijkstraAlgorithm Dijkstra;
+		BellmanFordAlgorithm Bellman;
+		List<ArcInspector> inspector = ArcInspectorFactory.getAllFilters();		
+        String mapName = "/home/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/toulouse.mapgr";
+        
+        try {
+        	GraphReader reader = new BinaryGraphReader(new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
+			Graph graph = reader.read();
+			// On test pour tout les filtres 
+			for (ArcInspector inspect : inspector) {
+				System.out.println("Trying for :" + inspect.toString());
+				
+				// Scenario hardcodé de 18765 jusqu'à 17389:
+				data = new ShortestPathData(graph, graph.get(18765), graph.get(17389), inspect);
+				
+				Dijkstra = new DijkstraAlgorithm(data);
+				Bellman = new BellmanFordAlgorithm(data);
+				assertTrue(Dijkstra.run().isFeasible());
+				assertTrue(Bellman.run().isFeasible());
+				
+				//Si BellmanFord et Dijkstra sont faisables
+				if(Bellman.run().isFeasible() && Dijkstra.run().isFeasible()) {
+					assertEquals(Dijkstra.run().getPath().getLength(), Bellman.run().getPath().getLength(), 1e-6);
+				} else {
+					System.out.println("Pas de chemin.");
+				}
+				if(Dijkstra.run().getPath().getLength() == Bellman.run().getPath().getLength()) {
+					System.out.println("OK");
+				} else {
+					System.out.println("NON OK");
+				}
+			}
+		} catch (IOException e) {
+			System.out.println(e);
+		}
+
+	}
+	
+	
+	@Test
+	public void testDijkstraUnfeasible() {
+		ShortestPathData data;
+		DijkstraAlgorithm Dijkstra;
+		ArcInspector inspector = ArcInspectorFactory.getAllFilters().get(1); // inspector = "Shortest path, only roads
+																				// open for car."
+		String mapName = "/home/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/toulouse.mapgr";
+
+		try {
+			GraphReader reader = new BinaryGraphReader(
+					new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
+			Graph graph = reader.read();
+
+			// Scenario hardcodé de 38943 jusqu'à 16290, chemin inaccesible en voiture:
+			data = new ShortestPathData(graph, graph.get(38943), graph.get(16290), inspector);
+
+			Dijkstra = new DijkstraAlgorithm(data);
+			assertTrue(!Dijkstra.run().isFeasible());
+
+			// Si Dijkstra est faisables
+			if (Dijkstra.run().isFeasible()) {
+				System.out.println("Unfeasible test : Chemin existant.");
+			} else {
+				System.out.println("Unfeasible test : Pas de chemin.");
+			}
+		} catch (IOException e) {
+			System.out.println(e);
+		}
+
 	}
 }
