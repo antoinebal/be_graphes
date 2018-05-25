@@ -182,7 +182,6 @@ public class DijkstraTest {
 	public void testDijkstraUnfeasible() {
 		ShortestPathData data;
 		DijkstraAlgorithm Dijkstra;
-		BellmanFordAlgorithm Bellman;
 		ArcInspector inspector = ArcInspectorFactory.getAllFilters().get(1); // inspector = "Shortest path, only roads
 																				// open for car."
 		String mapName = "/home/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/toulouse.mapgr";
@@ -196,12 +195,10 @@ public class DijkstraTest {
 			data = new ShortestPathData(graph, graph.get(38943), graph.get(16290), inspector);
 
 			Dijkstra = new DijkstraAlgorithm(data);
-			Bellman = new BellmanFordAlgorithm(data);
 			assertTrue(!Dijkstra.run().isFeasible());
-			assertTrue(!Bellman.run().isFeasible());
 
-			// Si BellmanFord et Dijkstra sont faisables
-			if (Bellman.run().isFeasible() && Dijkstra.run().isFeasible()) {
+			// Si Dijkstra est faisables
+			if (Dijkstra.run().isFeasible()) {
 				System.out.println("Unfeasible test : Chemin existant.");
 			} else {
 				System.out.println("Unfeasible test : Pas de chemin.");
