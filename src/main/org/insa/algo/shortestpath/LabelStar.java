@@ -2,13 +2,13 @@ package org.insa.algo.shortestpath;
 
 import org.insa.graph.Node;
 
-public class LabelStar extends Label implements Comparable<Label>{
+public class LabelStar extends Label {
 
 	//coût du parcours de l'origine jusqu'à ce noeud
-	private double cout_origine_;
+	protected double cout_origine_;
 	
 	//coût estimé de ce noeud jusqu'à la destination
-	private double cout_estime_dest_;
+	protected double cout_estime_dest_;
 	
 	public LabelStar(boolean marked, double cout_origine, double cout_estime_dest, Node pere, int id) {
 		super(marked, cout_origine + cout_estime_dest, pere, id);
@@ -20,13 +20,13 @@ public class LabelStar extends Label implements Comparable<Label>{
 	void setCout(double cout_origine, double cout_estime_dest) {
 		cout_origine_ = cout_origine;
 		cout_estime_dest_ = cout_estime_dest;
-		setCout(cout_origine_ + cout_estime_dest_);
+		cout_ = cout_origine_ + cout_estime_dest_;
 	}
 	
 	//màj du coût d'origine
 	void setCoutOrigine(double cout_origine) {
 		cout_origine_ = cout_origine;
-		setCout(cout_origine_ + cout_estime_dest_);
+		cout_ = cout_origine_ + cout_estime_dest_;
 	}
 	
 
@@ -41,14 +41,15 @@ public class LabelStar extends Label implements Comparable<Label>{
 	
 	/*on redéfinit la fonction compareTo
 	conformément à l'algo A*/
-	public int compareTo(LabelStar o) { 
+	@Override
+	public int compareTo(Label o) { 
 		if (this.getCout() < o.getCout()) {
 			return -1;
 		} else if  (this.getCout() > o.getCout()){
 			return 1;
 		} else { //si les deux coûts sont égaux
 			
-			if (this.getCoutEstimeDest() < o.getCoutEstimeDest()) {
+			if (this.getCoutEstimeDest() < ((LabelStar) o).getCoutEstimeDest()) {
 				return -1;
 			} else {
 				return 1;

@@ -3,17 +3,17 @@ package org.insa.algo.shortestpath;
 import org.insa.graph.Node;
 
 public class Label implements Comparable<Label> {
-	private boolean marked_;
+	protected boolean marked_;
 	
-	private double cout_;
+	protected double cout_;
 	
-	private Node pere_;
+	protected Node pere_;
 	
 	//id associé au  noeud du label
-	private int id_;
+	protected int id_;
 	
 	//pour voir si le label est dans le tas
-	private boolean deja_insere;
+	protected boolean deja_insere;
 	
 	public Label(boolean marked, double cout, Node pere, int id) {
 		marked_ = marked;
