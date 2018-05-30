@@ -47,9 +47,9 @@ public class AStarAlgorithm extends ShortestPathAlgorithm {
 		Arc[] predecessorArcs = new Arc[nbNodes];
 
 		// ITERATIONS
-		int i = 0;
+		//int i = 0;
 		while (!tas.isEmpty() && !Fin) {
-			i++;
+			//i++;
 
 			/*normalement le compareTo de LabelStar
 			 * devrait être appelé.
@@ -68,7 +68,7 @@ public class AStarAlgorithm extends ShortestPathAlgorithm {
 			// on récupère le noeud associé à l'id contenu dans labMin
 			Node nodeMin = graph.get(labMin.getID());
 			Point pointDest = data.getDestination().getPoint();
-			System.out.println("Coût noeud extrait du tas : "+(labTab[nodeMin.getId()].getCout()));
+			//System.out.println("Coût noeud extrait du tas : "+(labTab[nodeMin.getId()].getCout()));
 
 			for (Arc arc : nodeMin) {
 				if(data.isAllowed(arc)) {
@@ -78,7 +78,7 @@ public class AStarAlgorithm extends ShortestPathAlgorithm {
 				if (labTab[arc.getDestination().getId()] == null) {
 					Point pointCourant = arc.getDestination().getPoint();
 					double vol_oiseau = pointDest.distanceTo(pointCourant);
-					System.out.println("vol oiseau :"+vol_oiseau);
+					//System.out.println("vol oiseau :"+vol_oiseau);
 					
 					//si on cherche le FASTEST PATH, il faut changer vol_oiseau en durée
 					if (data.getMode() == AbstractInputData.Mode.TIME) {
@@ -139,7 +139,7 @@ public class AStarAlgorithm extends ShortestPathAlgorithm {
 				arcs.add(arc);
 				arc = predecessorArcs[arc.getOrigin().getId()];
 			}
-			System.out.println("Nbre itérations : "+i+" ; nombre d'arcs : "+arcs.size());
+			//System.out.println("Nbre itérations : "+i+" ; nombre d'arcs : "+arcs.size());
 			
 			
 			// Reverse the path...
