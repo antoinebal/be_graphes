@@ -9,6 +9,10 @@ import org.insa.graph.*;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
+	//pour indiquer au test combien de noeuds
+	//ont été explorés.
+	private int nbreNoeudsExplores_;
+	
 	public DijkstraAlgorithm(ShortestPathData data) {
 		super(data);
 	}
@@ -16,6 +20,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	@Override
 	protected ShortestPathSolution doRun() {
 
+		nbreNoeudsExplores_ = 0;
+		
 		// Retrieve the graph.
 		ShortestPathData data = getInputData();
 		ShortestPathSolution solution = null;
@@ -66,6 +72,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 						predecessorArcs[arc.getDestination().getId()] = arc;
 						tas.insert(labTab[arc.getDestination().getId()]);
 						notifyNodeReached(arc.getDestination());
+						//TEST
+						nbreNoeudsExplores_++;
 					} else if (labTab[arc.getDestination().getId()].marked_== false) {
 						double oldDistance = labTab[arc.getDestination().getId()].getCout();
 						double newDistance = labTab[nodeMin.getId()].getCout() + w;
@@ -108,5 +116,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		return solution;
 
 	}
+	
+	public int getNombreNoeudsExplores() {return nbreNoeudsExplores_; }
 
 }

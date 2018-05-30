@@ -14,13 +14,18 @@ import org.insa.algo.AbstractInputData;
 
 public class AStarAlgorithm extends ShortestPathAlgorithm {
 
-
+	//pour indiquer au test combien de noeuds
+	//ont été explorés.
+	private int nbreNoeudsExplores_;
+	
+	
 	public AStarAlgorithm(ShortestPathData data) {
 		super(data);
 	}
 
 	@Override
 	protected ShortestPathSolution doRun() {
+		nbreNoeudsExplores_ = 0;
 
 		// Retrieve the graph.
 		ShortestPathData data = getInputData();
@@ -98,9 +103,12 @@ public class AStarAlgorithm extends ShortestPathAlgorithm {
 					
 					tas.insert(labTab[arc.getDestination().getId()]);
 					notifyNodeReached(arc.getDestination());
+					
+					//TEST
+					nbreNoeudsExplores_++;
 					//System.out.println("Ajouté dans tas : "+labTab[nodeMin.getId()].getCout() + w);
 				
-				//si le noeud n'a jamais été visité		
+				//si le noeud a déjà été visité		
 				} else if (labTab[arc.getDestination().getId()].marked_== false){
 					//on compare les coûts totaux
 					double oldDistance = labTab[arc.getDestination().getId()].getCoutOrigine();
@@ -152,5 +160,7 @@ public class AStarAlgorithm extends ShortestPathAlgorithm {
 		return solution;
 
 	}
+	
+	public int getNombreNoeudsExplores() {return nbreNoeudsExplores_; }
 
 }
