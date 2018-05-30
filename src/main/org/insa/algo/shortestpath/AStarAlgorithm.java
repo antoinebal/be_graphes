@@ -60,7 +60,6 @@ public class AStarAlgorithm extends ShortestPathAlgorithm {
 			labMin.setInsere(false);
 
 			/* si le label extrait correspond à celui de la destination, on sort */
-			// TODO : equalTo dans Label
 			if (labMin == labTab[data.getDestination().getId()]) {
 				Fin = true;
 			}
@@ -75,7 +74,7 @@ public class AStarAlgorithm extends ShortestPathAlgorithm {
 				double w = data.getCost(arc);
 
 				//si le noeud n'a jamais été visité
-				if (labTab[arc.getDestination().getId()] == null) {
+				if (labTab[arc.getDestination().getId()] == null ) {
 					Point pointCourant = arc.getDestination().getPoint();
 					double vol_oiseau = pointDest.distanceTo(pointCourant);
 					//System.out.println("vol oiseau :"+vol_oiseau);
@@ -83,7 +82,7 @@ public class AStarAlgorithm extends ShortestPathAlgorithm {
 					//si on cherche le FASTEST PATH, il faut changer vol_oiseau en durée
 					if (data.getMode() == AbstractInputData.Mode.TIME) {
 					/*comme on cherche une borne inférieure, on divise par la vitesse
-					 * la plus élevée existante dans le graohe : 130 km/h (~36 m/s)
+					 * la plus élevée existante dans le graphe : 130 km/h (~36 m/s)
 					 */
 						double vitesse_max = 130000.0/3600.0;
 						vol_oiseau /= vitesse_max;
@@ -102,7 +101,7 @@ public class AStarAlgorithm extends ShortestPathAlgorithm {
 					//System.out.println("Ajouté dans tas : "+labTab[nodeMin.getId()].getCout() + w);
 				
 				//si le noeud n'a jamais été visité		
-				} else {
+				} else if (labTab[arc.getDestination().getId()].marked_== false){
 					//on compare les coûts totaux
 					double oldDistance = labTab[arc.getDestination().getId()].getCoutOrigine();
 					double newDistance = labTab[nodeMin.getId()].getCoutOrigine() + w;

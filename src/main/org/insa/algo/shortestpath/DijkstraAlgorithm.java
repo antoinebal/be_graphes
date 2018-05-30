@@ -66,7 +66,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 						predecessorArcs[arc.getDestination().getId()] = arc;
 						tas.insert(labTab[arc.getDestination().getId()]);
 						notifyNodeReached(arc.getDestination());
-					} else {
+					} else if (labTab[arc.getDestination().getId()].marked_== false) {
 						double oldDistance = labTab[arc.getDestination().getId()].getCout();
 						double newDistance = labTab[nodeMin.getId()].getCout() + w;
 						if (newDistance < oldDistance) {
