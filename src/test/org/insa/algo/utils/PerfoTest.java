@@ -24,11 +24,11 @@ public class PerfoTest {
 	private static GraphReader reader;
 	private static Graph graph;
 	private static ArrayList<int[]> CoordonneesAleatoires = new ArrayList<int[]>();
-	private static int Taille = 30;
+	private static int Taille = 100;
 
 	@BeforeClass
 	public static void initAll() throws IOException {
-		String mapName = "/home/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/toulouse.mapgr";
+		String mapName = "/home/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre-dense.mapgr";
 
 		reader = new BinaryGraphReader(new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
 		graph = reader.read();
@@ -48,22 +48,17 @@ public class PerfoTest {
 	@Test
 	public void testPerformanceDijsktraAStar() {
 		// Initialisation :
-		ShortestPathSolution SolutionBellman;
 		ShortestPathSolution SolutionDijkstra;
 		ShortestPathSolution SolutionAStar;
-		BellmanFordAlgorithm Bellman;
 		DijkstraAlgorithm Dijkstra;
 		AStarAlgorithm AStar;
 		ShortestPathData data;
-		Duration TempsBellman;
 		Duration TempsDijkstra;
 		Duration TempsAStar;
-		double DistanceBellman = 0;
 		double DistanceDijkstra = 0;
 		double DistanceAStar = 0;
 		int NoeudsExploresDijkstra;
 		int NoeudsExploresAStar;
-		long SommeTempsBellman = 0;
 		long SommeTempsDijkstra = 0;
 		long SommeTempsAStar = 0;
 		int SommeNoeudsExploresDijkstra = 0;
@@ -79,30 +74,24 @@ public class PerfoTest {
 				data = new ShortestPathData(graph, graph.get(point[0]), graph.get(point[1]), inspect);
 				Dijkstra = new DijkstraAlgorithm(data);
 				AStar = new AStarAlgorithm(data);
-				Bellman = new BellmanFordAlgorithm(data);
 				SolutionDijkstra = Dijkstra.run();
 				NoeudsExploresDijkstra = Dijkstra.getNombreNoeudsExplores();
 				SolutionAStar = AStar.run();
 				NoeudsExploresAStar = AStar.getNombreNoeudsExplores();
-				SolutionBellman = Bellman.run();
 				TempsDijkstra = SolutionDijkstra.getSolvingTime();
 				TempsAStar = SolutionAStar.getSolvingTime();
-				TempsBellman = SolutionBellman.getSolvingTime();
 				
-				if (SolutionDijkstra.isFeasible() && SolutionAStar.isFeasible() && SolutionBellman.isFeasible()) {
+				if (SolutionDijkstra.isFeasible() && SolutionAStar.isFeasible()) {
 					DistanceDijkstra = SolutionDijkstra.getPath().getLength();
 					DistanceAStar = SolutionAStar.getPath().getLength();
-					DistanceBellman = SolutionBellman.getPath().getLength();
 				} else {				
 					DistanceDijkstra = 0;
 					DistanceAStar = 0;
-					DistanceBellman = 0;
 				}
 				if ((Math.abs(DistanceDijkstra - DistanceAStar) / DistanceDijkstra) < 0.3) {
 					
 					SommeTempsDijkstra += TempsDijkstra.toMillis();
 					SommeTempsAStar += TempsAStar.toMillis();
-					SommeTempsBellman += TempsBellman.toMillis();
 
 					SommeNoeudsExploresDijkstra += NoeudsExploresDijkstra;
 					SommeNoeudsExploresAStar += NoeudsExploresAStar;
@@ -113,16 +102,13 @@ public class PerfoTest {
 			System.out.println("Nombre de tests : " + Taille);
 			System.out.println("Temps total Dijkstra = " + SommeTempsDijkstra + "ms");
 			System.out.println("Temps total AStar = " + SommeTempsAStar + "ms");
-			System.out.println("Temps total Bellman = " + SommeTempsBellman + "ms");
 			System.out.println("Moyenne temps Dijkstra = " + (SommeTempsDijkstra / ((Taille * 6) - Erreur)) + "ms");
 			System.out.println("Moyenne temps AStar = " + (SommeTempsAStar / ((Taille * 6) - Erreur)) +"ms");
-			System.out.println("Moyenne temps Bellman = " + (SommeTempsBellman / ((Taille * 6) - Erreur)) + "ms");
 			System.out.println("Nombre de chemins impossibles : " + Erreur);
 			System.out.println("Total des noeuds parcourues par Dijkstra : " + SommeNoeudsExploresDijkstra);
 			System.out.println("Total des noeuds parcourues par AStar : " + SommeNoeudsExploresAStar + "\n");
 			SommeTempsDijkstra = 0;
 			SommeTempsAStar = 0;
-			SommeTempsBellman = 0;
 			SommeNoeudsExploresDijkstra = 0;
 			SommeNoeudsExploresAStar = 0;
 			Erreur = 0;

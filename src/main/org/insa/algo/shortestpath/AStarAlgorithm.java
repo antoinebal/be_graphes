@@ -50,7 +50,7 @@ public class AStarAlgorithm extends ShortestPathAlgorithm {
 
 		// Initialize array of predecessors.
 		Arc[] predecessorArcs = new Arc[nbNodes];
-
+		double vitesse_max = 130000.0/3600.0;
 		// ITERATIONS
 		//int i = 0;
 		while (!tas.isEmpty() && !Fin) {
@@ -89,7 +89,6 @@ public class AStarAlgorithm extends ShortestPathAlgorithm {
 					/*comme on cherche une borne inférieure, on divise par la vitesse
 					 * la plus élevée existante dans le graphe : 130 km/h (~36 m/s)
 					 */
-						double vitesse_max = 130000.0/3600.0;
 						vol_oiseau /= vitesse_max;
 					}
 					/*si on cherche le SHORTEST PATH, pas besoin de changer le vol d'oiseau
